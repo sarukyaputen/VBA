@@ -125,7 +125,7 @@ Range("f:k").Delete
             Cells(I, 1) = vvv
           Next I
 
-Columns.EntireColumn.AutoFit  
+Columns.EntireColumn.AutoFit   '自動調整欄位
 End Sub
 
 Sub 抓資料3() ' 抓下來 格式不須處理 直接可以使用
