@@ -1,0 +1,22 @@
+Sub 轉存csv() '轉檔中
+
+    Application.ScreenUpdating = False
+     
+    Application.DisplayAlerts = False 'False True
+    
+   Dim mF As String
+   mF = Dir("D:\lego\32.xlsx to csv\*.xlsx")
+   Do While mF <> ""
+       Workbooks.Open Filename:="D:\lego\32.xlsx to csv\" & mF
+        aaa = Len(mF)
+        mmmf = Mid(mF, 1, aaa - 5)
+    ActiveWorkbook.SaveAs Filename:="D:\lego\32.xlsx to csv\完成\" & mmmf & ".csv", FileFormat:=xlCSV, _
+        CreateBackup:=False
+
+       ActiveWorkbook.Close
+      mF = Dir()
+  Loop
+    
+ 
+
+End Sub
