@@ -1,0 +1,44 @@
+Sub SO_delete_2() ' 刪除檔案 新增月份
+
+'Range("a:b,d:ap,ar:ar,at:at,av:bt,bv:bv,ca:CC,CE:cf,ci:eu,ey:gg,gi:gk,gm:gx,ha:ha,hc:it,iy:jr,jt:kc,ke:kr,kt:lo").Delete
+
+Range("a:b,d:ap,ar:ar,at:at,av:bk,bm:bt,bv:bv,ca:CC,CE:cf,ci:eu,ey:gg,gi:gk,gm:gx,ha:ha,hc:it,iy:jr,jt:kc,ke:kr,kt:lo").Delete
+Range("ac:AG").Delete
+a = Range("a1").End(xlToRight).Column + 1
+y = Range("a1").End(xlDown).Row
+dd = Range("a1").End(xlDown).Row
+
+aaa = Array("", "f2", "H2", "K2", "ab2", "b2", "M2") ' 要變目標
+bbb = Array("", "f", "H", "K", "ab", "b", "M")   '要變目標
+
+Cells(1, a) = "月"
+
+Cells(2, a) = "=YEAR(C2)& IF(MONTH(C2<10),0&MONTH(C2),MONTH(C2))"
+
+Cells(2, a).Select
+
+Selection.AutoFill Destination:=Range("ac2:ac" & y & "")
+
+
+a = Range("a1").End(xlToRight).Column + 1
+
+For I = 1 To 6
+
+vvv = aaa(I)
+
+
+    Cells(2, a) = "=TEXT(" & vvv & ",0)"
+
+    Cells(2, a).AutoFill Destination:=Range("Ad2:Ad" & dd & "")
+
+    Range("Ad2:Ad" & dd).Copy
+      
+    Cells(2, bbb(I)).PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+
+Next I
+
+
+Range("Ad:ad").Delete
+
+
+End Sub
