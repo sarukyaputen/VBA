@@ -1,0 +1,99 @@
+Sub OP12()  '接檔案
+
+
+Dim mFile As String
+       
+       I = 1
+      
+       
+       
+     'Application.ScreenUpdating = False
+     
+    Application.DisplayAlerts = False
+     
+     
+Workbooks.Add  's
+ 
+X = InputBox(檔案類型, , "XLSX")
+     
+
+ActiveWorkbook.SaveAs Filename:="C:\Users\2010v\Desktop\並檔案\YY.xlsx"  'd
+     
+  
+  
+       mFile = Dir("C:\Users\2010v\Desktop\並檔案\*." & X)
+             
+       Do While mFile <> ""
+          Workbooks.Open Filename:="C:\Users\2010v\Desktop\並檔案\" & mFile
+          
+          
+         Windows(mFile).Activate
+         
+         Sheets(2).Select
+          
+         CC = Application.WorksheetFunction.CountA(Sheets(1).Range("a:a"))
+         
+         Cells(1, 1).Select
+         ActiveCell.CurrentRegion.Select
+         
+         Selection.Copy
+         
+         Windows("YY.xlsx").Activate
+         
+         
+         
+         dd = Application.WorksheetFunction.CountA(Sheets(1).Range("a:a"))
+
+           aaa = Application.WorksheetFunction.CountA(Sheets(1).Rows("1:1"))
+        
+         
+         ' Workbooks("YY").Sheets(1).Cells(dd + 1, 1).Select
+        
+         Sheets(1).Select
+           Cells(dd + 1, 1).Select
+          
+         Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+         ee = Application.WorksheetFunction.CountA(Sheets(1).Range("a:a"))
+        
+         Workbooks("YY").Sheets(2).Select
+         
+         Cells(I, 1) = mFile
+         Cells(I, 2) = CC
+         Cells(I, 3) = ee
+         
+                     Windows(mFile).Close
+                     
+                     
+            
+                  mFile = Dir()
+      
+              I = I + 1
+     Loop
+     
+     ActiveWorkbook.Save
+     
+     ActiveWorkbook.Close
+     
+     
+     
+            
+      Application.DisplayAlerts = True
+      Application.ScreenUpdating = True
+
+
+
+
+      ' Dim mFile As String
+      ' mFile = Dir("C:\TEMP\book*.XLSX")
+      ' Do While mFile <> ""
+       '   Workbooks.Open Filename:="C:\temp\" & mFile
+          
+          
+        '  mFile = Dir()
+          
+    ' Loop
+
+
+End Sub
