@@ -1,0 +1,490 @@
+
+Sub 巨集1()
+'
+' 巨集1 巨集
+'
+
+'
+    ActiveWindow.SmallScroll Down:=-48
+    Rows("21:21").Select
+    Range("E21").Activate
+    Selection.RowHeight = 150
+    ActiveWindow.SmallScroll Down:=3
+End Sub
+
+
+
+
+
+Sub Farcent()
+ 
+ Rows("1:1").Select
+ Selection.Delete Shift:=xlUp
+ 
+ ActiveSheet.Shapes.SelectAll
+ 
+ Selection.ShapeRange.IncrementTop 1.5
+ Selection.ShapeRange.IncrementLeft 1.5
+ Cells.Select
+ Selection.UnMerge
+ 
+ ActiveSheet.Shapes.SelectAll
+ Selection.ShapeRange.ScaleHeight 0.0555555556, msoFalse, msoScaleFromTopLeft
+ ActiveSheet.Shapes.SelectAll
+ Selection.Placement = xlMoveAndSize
+ ActiveSheet.Range("$A$1:$Q$20957").AutoFilter Field:=1, Criteria1:="="
+ 
+ Rows("3:20963").Select
+ Selection.Delete Shift:=xlUp
+ 
+ Rows("1:1").Select
+ Selection.AutoFilter
+  
+ 
+ Cells.Select
+ Selection.AutoFilter
+ 
+ Rows("2:20963").Select
+ Selection.RowHeight = 150
+ 
+ ActiveSheet.Shapes.SelectAll
+ Selection.ShapeRange.ScaleHeight 10.30003, msoFalse, msoScaleFromTopLeft
+ 
+  
+' ActiveSheet.Shapes.SelectAll
+' Selection.ShapeRange.ScaleHeight 0.7361701092, msoFalse, msoScaleFromTopLeft
+ 
+ ActiveSheet.Shapes.SelectAll
+ Selection.ShapeRange.ScaleWidth 1.4054170301, msoFalse, msoScaleFromTopLeft
+
+ Rows("1:1").Select
+ Selection.AutoFilter
+ 
+ Columns("Q:Q").ColumnWidth = 36.5
+ 
+End Sub
+
+
+Sub Distell()  '二訪分析
+'
+' 巨集1 巨集
+Application.ScreenUpdating = False
+
+newHour = Hour(Now())
+newMinute = Minute(Now())
+newSecond = Second(Now()) + 40
+waitTime = TimeSerial(newHour, newMinute, newSecond)
+
+  Sheets(1).Name = "Page_1"
+  
+  Sheets(1).Select
+  'Sheets("Page_1").Copy After:=Sheets(1)
+  Sheets(1).Copy After:=Sheets(1)
+  Sheets(2).Select
+  Rows(1).Delete
+  Columns("A:b").Delete
+  
+  y = Range("b2").End(xlDown).Row
+  
+  For i = y To 2 Step -1
+  
+    
+   Cells(i, 4).Select
+   ' MsgBox (Cells(i, 4))
+   s = Val(Cells(i, 4))
+  
+   If (s < 40000) Or (s > 40010) Then Rows(i).Delete
+
+    
+  Next i
+  
+  Sheets(2).Select
+  Cells(1, 1).Select
+ 
+  ActiveCell.CurrentRegion.Select
+  
+      ActiveWorkbook.Worksheets("Page_1 (2)").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Page_1 (2)").Sort.SortFields.Add Key:=Range( _
+        "D2:D" & y), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortTextAsNumbers
+    ActiveWorkbook.Worksheets("Page_1 (2)").Sort.SortFields.Add Key:=Range( _
+        "I2:I" & y), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    ActiveWorkbook.Worksheets("Page_1 (2)").Sort.SortFields.Add Key:=Range( _
+        "O2:O" & y), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    ActiveWorkbook.Worksheets("Page_1 (2)").Sort.SortFields.Add Key:=Range( _
+        "P2:P" & y), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    ActiveWorkbook.Worksheets("Page_1 (2)").Sort.SortFields.Add Key:=Range( _
+        "A2:A" & y), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
+        xlSortNormal
+    With ActiveWorkbook.Worksheets("Page_1 (2)").Sort
+        .SetRange Range("A1:Q" & y)
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+  
+  Sheets(2).Copy After:=Sheets(1)
+  Sheets(2).Copy After:=Sheets(1)
+  Sheets(2).Name = "Raw data"
+  Sheets(3).Name = "一訪"
+  Sheets(4).Name = "二訪"
+  
+  Sheets(3).Select
+  
+  
+ ' p = InputBox("請移除星期二", , "2019/2/19")
+  
+   x1 = Range("a1").End(xlToRight).Column + 1
+   y = Range("b2").End(xlDown).Row
+   
+  Cells(2, x1) = "=CHOOSE(WEEKDAY(A2,1),""日"",""一"",""二"",""三"",""四"",""五"",""六"")"
+  Cells(2, x1).Select
+  Selection.AutoFill Destination:=Range("r2:r" & y & "")
+  
+  Rows("1:1").AutoFilter
+ 
+  ActiveSheet.Range("$A$1:$Q$80957").AutoFilter Field:=x1, Criteria1:="二"
+  
+  
+'  Rows("3:60963").Select
+'  Selection.Delete Shift:=xlUp
+    
+      delay  '------------------------------------------
+    
+    
+  Rows("2:60963").Delete Shift:=xlUp
+    
+  Rows("1:1").AutoFilter
+
+    
+  y = Range("b2").End(xlDown).Row
+  Cells(2, x1 + 1).Select
+  Cells(2, x1 + 1) = "=IF(I2&P2= I3&P3,""@"","""")"
+  Selection.AutoFill Destination:=Range("s2:s" & y & "")
+
+  Rows("1:1").AutoFilter
+      
+  ActiveSheet.Range("$A$1:$Q$80957").AutoFilter Field:=x1 + 1, Criteria1:="@"
+  
+'  Rows("2:60963").Select
+'  Selection.Delete Shift:=xlUp
+
+
+  delay  '------------------------------------------
+  
+  Rows("2:60963").Delete Shift:=xlUp
+  Rows("1:1").AutoFilter
+  
+  y = Range("b2").End(xlDown).Row
+
+  
+  Cells(2, x1 + 2).Select
+  Cells(2, x1 + 2) = "=IFERROR(NUMBERVALUE(Q2),Q2)"
+  
+  Cells(2, x1 + 2).Select
+  Selection.AutoFill Destination:=Range("t2:t" & y & "")
+  
+    delay2  '------------------------------------------
+  
+  
+  '  Rows("1:1").AutoFilter
+  
+  Cells(1, x1 + 2) = "Sub Category"
+  
+  Range("t:t").Copy
+  Range("Q:q").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+  
+  
+
+  
+  '--------------------------------------------------------------------
+  
+  
+  Sheets("二訪").Select
+  
+   x1 = Range("a1").End(xlToRight).Column + 1
+   y = Range("b2").End(xlDown).Row
+   
+  Cells(2, x1) = "=CHOOSE(WEEKDAY(A2,1),""日"",""一"",""二"",""三"",""四"",""五"",""六"")"
+  
+  Cells(2, x1).Select
+  Selection.AutoFill Destination:=Range("r2:r" & y & "")
+  
+    delay2  '------------------------------------------
+  
+  Rows("1:1").AutoFilter
+ 
+  ActiveSheet.Range("$A$1:$Q$80957").AutoFilter Field:=x1, Criteria1:="<>二"
+  
+    delay  '------------------------------------------
+    
+  Rows("2:60963").Delete Shift:=xlUp
+  
+  Rows("1:1").AutoFilter
+  
+  
+  Cells(2, x1 + 1) = "=I2&D2"
+  Cells(2, x1 + 1).AutoFill Destination:=Range("s2:s" & y & "")
+  
+    delay2  '------------------------------------------
+  Range("S:S").Copy
+  Range("s:s").Select
+  
+  
+  Columns("S:S").Select
+  Selection.Copy
+  Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+  
+  
+  
+  
+    Sheets("一訪").Select
+   
+  '-------------------------------------------------------
+  
+  Cells(1, 18) = "yy"
+  Cells(1, 19) = "yy1"
+  
+  
+  
+  Sheets("一訪").Select
+  
+  x1 = Range("a1").End(xlToRight).Column + 1
+  y = Range("b2").End(xlDown).Row
+  
+  Cells(1, x1) = "yy2"
+  
+  Cells(2, x1) = "=VLOOKUP(I2&D2,二訪!S:S,1,0)"
+  Cells(2, x1).AutoFill Destination:=Range("u2:u" & y & "")
+  
+  
+  delay  '------------------------------------------
+  
+Cells(1, 20).Select
+
+  Columns("u:u").Select
+  Selection.Copy
+  Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+  
+ 'ActiveSheet.Range("$A$1:$Q$80957").AutoFilter Field:=x1, Criteria1:="="
+ ActiveSheet.Range("$A$1:$U$80957").AutoFilter Field:=x1, Criteria1:="#N/A"
+  Rows("2:60963").Delete Shift:=xlUp
+  
+  
+    Rows("1:1").AutoFilter
+  
+'-------------------------------
+    Sheets("二訪").Select
+    
+    Cells(1, 18) = "xx1"
+    Cells(1, 19) = "xx2"
+    Cells(1, 20) = "xx3"
+    
+      y = Range("b2").End(xlDown).Row
+    
+    Cells(2, 20) = "=VLOOKUP(I2,一訪!I:I,1,0)"
+    Cells(2, x1 - 1).AutoFill Destination:=Range("t2:t" & y & "")
+    
+    ActiveSheet.Range("$A$1:$t$80957").AutoFilter Field:=x1 - 1, Criteria1:="#N/A"
+    
+    delay  '------------------------------------------
+    
+    Rows("2:60963").Delete Shift:=xlUp
+    
+    
+       Rows("1:1").AutoFilter
+ 
+  
+  Application.ScreenUpdating = True
+  
+  End Sub
+  
+  
+  Sub Distell2()  ' 星期三 二訪分析貼值
+  
+  
+  'OSA
+  
+    Sheets("Summary_人員貼值用").Visible = True
+
+    Sheets("Summary_人員貼值用").Select
+    Range("H5:S15").Copy
+    Sheets("Summary_人員績效").Select
+    Range("H5").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+                              
+    Sheets("Summary_人員貼值用").Select
+    Range("H19:S29").Copy
+    Sheets("Summary_人員績效").Select
+    Range("H19").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+    Sheets("Summary_人員貼值用").Select
+    Range("I33:R65").Copy
+    Sheets("Summary_人員績效").Select
+    Range("I33").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+  '7-11
+             
+    Sheets("Summary_人員貼值用").Select
+    Range("X5:AH15").Copy
+    Sheets("Summary_人員績效").Select
+    Range("X5").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+    Sheets("Summary_人員貼值用").Select
+    Range("X19:AH29").Copy
+    Sheets("Summary_人員績效").Select
+    Range("X19").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+    Sheets("Summary_人員貼值用").Select
+    Range("Y33:AH65").Copy
+    Sheets("Summary_人員績效").Select
+    Range("Y33").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+'FM
+    Sheets("Summary_人員貼值用").Select
+
+    Range("AM5:AW15").Copy
+    Sheets("Summary_人員績效").Select
+    Range("AM5").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+    Sheets("Summary_人員貼值用").Select
+    Range("AM19:AW29").Copy
+    Sheets("Summary_人員績效").Select
+    Range("AM19").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+    Sheets("Summary_人員貼值用").Select
+    Range("AN33:AW65").Copy
+    Sheets("Summary_人員績效").Select
+    Range("AN33").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+'HL
+
+    Sheets("Summary_人員貼值用").Select
+    Range("BB5:BJ15").Copy
+    Sheets("Summary_人員績效").Select
+    Range("BB5").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+        
+
+    Sheets("Summary_人員貼值用").Select
+    Range("BB19:BJ29").Copy
+    Sheets("Summary_人員績效").Select
+    Range("BB19").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+        
+    Sheets("Summary_人員貼值用").Select
+    Range("BC33:BJ65").Copy
+    Sheets("Summary_人員績效").Select
+    Range("BC33").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+  
+
+
+    Range("AN:AW,Y:AH,BC:BJ").Select
+    Selection.Replace What:="#DIV/0!", Replacement:="-", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+   
+   
+   Cells(5, 5).Select
+  
+  
+  End Sub
+
+
+
+  Sub Distell21()
+  
+  Page = Array("Summary_人員貼值用", "Summary_人員績效")
+  List = Array("H5:S15", "H19:S29", "I33:R65", "X5:AH15", "X19:AH29", "Y33:AH65", "AM5:AW15", "AM19:AW29", "AN33:AW65", "BB5:BJ15", "BB19:BJ29", "BC33:BJ65")
+  select_ta = Array("H5", "H19", "I33", "x5", "x19", "y33", "am5", "am19", "AN33", "BB5", "BB19", "BC33")
+      
+  Sheets(Page(0)).Visible = True
+      
+  For i = 0 To 11
+    Sheets(Page(0)).Select
+    Range(List(i)).Copy
+    Sheets(Page(1)).Select
+    Range(select_ta(i)).PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+                              
+  Next i
+  
+  Range("i:s,AN:AW,Y:AH,BC:BJ").Replace What:="#DIV/0!", Replacement:="-", LookAt:=xlPart, SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+  Sheets(Page(0)).Visible = False
+  
+   
+   Cells(5, 5).Select
+  End Sub
+  
+
+
+  Sub Distell3()  ' 星期三 二訪分析測試清除
+  
+  Sheets("Summary_人員績效").Select
+  Range("H5:S15,H19:S29,I33:R65,X5:AH15,X19:AH29,Y33:AH65,AM5:AW15,AM19:AW29,AN33:AW65,BB5:BJ15,BB19:BJ29,BC33:BJ65").ClearContents
+      
+    
+  End Sub
+
+Sub tt()
+
+
+ ActiveSheet.Range("$A$1:$Q$80957").AutoFilter Field:=6, Criteria1:="<>7E"
+End Sub
+
+
+Sub delay()
+
+newHour = Hour(Now())
+newMinute = Minute(Now())
+newSecond = Second(Now()) + 30
+waitTime = TimeSerial(newHour, newMinute, newSecond)
+  
+
+Application.Wait waitTime
+End Sub
+
+Sub delay2()
+
+
+newHour = Hour(Now())
+newMinute = Minute(Now())
+newSecond = Second(Now()) + 18
+waitTime = TimeSerial(newHour, newMinute, newSecond)
+  
+
+Application.Wait waitTime
+
+
+End Sub
